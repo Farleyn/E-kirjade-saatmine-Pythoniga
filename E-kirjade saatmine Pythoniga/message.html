@@ -5,23 +5,74 @@
     <title>Python e-kiri</title>
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
-
-    <div style="background-color: #ffffff; padding: 20px; border-radius: 6px;">
+    <div style="background-color: #ffffff; padding: 20px; border-radius: 6px; max-width: 800px; margin: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <h2 style="color: #306998;">Tere Pythonist!</h2>
-
         <p>
             See e-kiri on saadetud Python programmiga,
             kasutades <strong>smtplib</strong> ja <strong>HTML-vormingut</strong>.
         </p>
-
         <p>
-            Kirjale on lisatud ka pilt manusena.
+            See e-kiri <strong>saadeti alloleva Python-koodi abil</strong>.
         </p>
+        
+        <h3 style="color: #444;">Kasutatud Python-kood:</h3>
+        <pre style="background-color:#f0f0f0; padding:15px; border-radius:5px; overflow-x:auto; border: 1px solid #ddd; font-size: 13px;">
+<code>
+import smtplib
+from email.message import EmailMessage
 
-        <p>
-            Koostanud,<br><strong>Nikita Grossholm</strong>
-        </p>
+def send_email():
+    email_subject = "E-kirjade saatmine Pythoniga"
+    while True:
+        sender_email_address = input("Teie e-posti aadress: ")
+        if "@" not in sender_email_address or "." not in sender_email_address:
+            print("Palun sisesta kehtiv e-posti aadress.")
+        else:
+            receiver_email_address = input("Saaja e-posti aadress: ")
+            email_password = input("Sisesta oma e-posti rakenduse parool: ")
+            break
+            
+    email_smtp = "smtp.gmail.com"
+    message = EmailMessage()
+    
+    with open("message.html", "r", encoding="utf-8") as file:
+        html_content = file.read()
+    
+    message.set_content(html_content, subtype="html")
+    
+    with open("python_gmail.jpg", "rb") as file:
+        message.add_attachment(
+            file.read(),
+            maintype="image",
+            subtype="jpg",
+            filename="image.jpg"
+        )
+        
+    message["Subject"] = email_subject
+    message["From"] = sender_email_address
+    message["To"] = receiver_email_address
+    
+    server = smtplib.SMTP(email_smtp, 587)
+    server.starttls()
+    server.login(sender_email_address, email_password)
+    server.send_message(message)
+    server.quit()
+    print("E-kiri saadetud edukalt!")
+
+send_email()
+</code>
+        </pre>
+        
+        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: #555; font-size: 14px;">
+            <p>Kirjale on lisatud ka pilt manusena.</p>
+            <p><strong>Koodi autor:</strong> Nikita Grossholm</p>
+            <p>
+                Projekt on leitav GitHubist: 
+                <a href="https://github.com/Farleyn/E-kirjade-saatmine-Pythoniga" style="color: #306998; text-decoration: none; font-weight: bold;">
+                    GitHub Repository
+                </a>
+            </p>
+        </div>
     </div>
-
 </body>
 </html>
